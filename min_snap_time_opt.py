@@ -23,6 +23,10 @@ class min_snap:
         self.t_test = self.time_array()
         self.t =np.copy(self.t_test)
         self.t_interval=self.give_intervals(self.t)
+        self.t_base = self.base_array(15)
+        self.t_base_int = self.give_intervals(self.t_base)
+        print(self.t_test)
+        print(self.t_base)
         
         self.q=np.zeros(shape=(n*m,1)).reshape((n*m,))
         self.G=np.zeros(shape=((4*m)+2,n*m))
@@ -54,6 +58,14 @@ class min_snap:
         for i in range(1,self.m+1):
             dist = np.sqrt((self.x[i]-self.x[i-1])**2 + (self.y[i]-self.y[i-1])**2 + (self.z[i]-self.z[i-1])**2)
             ti = dist/self.v
+            t.append(t[-1]+ti)
+        return t
+    
+    def base_array(self,vm):
+        t = [self.start_time]
+        for i in range(1,self.m+1):
+            dist = np.sqrt((self.x[i]-self.x[i-1])**2 + (self.y[i]-self.y[i-1])**2 + (self.z[i]-self.z[i-1])**2)
+            ti = dist/vm
             t.append(t[-1]+ti)
         return t
 
@@ -192,18 +204,21 @@ class min_snap:
         b=self.cost_func()
         t_comp=np.copy(self.t_interval)
         for s in range(len(self.t_interval)):
-            t_comp[s]=t_comp[s]+h
-            self.t_interval=np.copy(t_comp)
-            a=self.cost_func()
-            
-            gradient[s]=((a-b)/h)
-            
-            t_comp[s]=t_comp[s]-h
+            if(t_comp[s]<self.t_base_int[s]):
+                gradient[s] = 0
+            else:
+                t_comp[s]=t_comp[s]+h
+                self.t_interval=np.copy(t_comp)
+                a=self.cost_func()
+                
+                gradient[s]=((a-b)/h)
+                
+                t_comp[s]=t_comp[s]-h
         self.t_interval=np.copy(tint_orig)
         return gradient
 
 
-    def gradient_descent(self,max_iterations=500,threshold=0.005,learning_rate=0.00001):
+    def gradient_descent(self,max_iterations=1000,threshold=0.005,learning_rate=0.00001):
         
         w = np.copy(np.array(self.t_interval))
         w_history = np.copy(w)
@@ -236,8 +251,8 @@ class min_snap:
         return w
 
 if __name__ == '__main__':
-    x = [2,0,-2,0]
-    y = [0,2,0,-2]
+    x = [20,0,-20,0]
+    y = [0,20,0,-20]
     z = [0,1,2,0]
     v = 10
 

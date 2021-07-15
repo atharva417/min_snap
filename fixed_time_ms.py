@@ -150,9 +150,9 @@ class min_snap:
         plt.show()
 
 if __name__ == '__main__':
-    x = [2,0,-2,0]
-    y = [0,2,0,-2]
-    z = [0,1,2,0]
+    x = [0,1,2,3]
+    y = [0,1,2,3]
+    z = [0,1,2,3]
     v = 10
     ms = min_snap(x,y,z,v)
     ms.solve()
