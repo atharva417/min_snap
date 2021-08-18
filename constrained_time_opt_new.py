@@ -304,7 +304,9 @@ class min_snap:
 
             self.psi_path=np.arctan2(self.y_dot_path,self.x_dot_path)
 
-            return self.x_path,self.x_dot_path,self.x_dot_dot_path,self.y_path,self.y_dot_path,self.y_dot_dot_path,self.y_path,self.y_dot_path,self.y_dot_dot_path,self.psi_path
+        #print(self.z_path)
+
+        return self.x_path,self.x_dot_path,self.x_dot_dot_path,self.y_path,self.y_dot_path,self.y_dot_dot_path,self.z_path,self.z_dot_path,self.z_dot_dot_path,self.psi_path
 
         #print(self.y_dot_path,'\n\n')
         #print(self.y_dot_dot_path)
@@ -321,10 +323,13 @@ class min_snap:
 
 
 if __name__ == '__main__':
-    x = [0,0,-2,0]
+    x=[0,0,0,0]
+    y=[0,0,0,0]
+    z=[4,6,10,12]
+    '''x = [0,0,-2,0]
     y = [0,2,0,-2]
-    z = [1,1,2,0]
-    '''x=[2,-2,-2,1,4,6]
+    z = [0,3,5,7]
+    x=[2,-2,-2,1,4,6]
     y=[4,0,-2,-4,-3,-5]
     z=[10,7,5,3,0,1]'''
     v_test = 2
@@ -341,7 +346,9 @@ if __name__ == '__main__':
     ms.optimize()
 
     ms.get_trajectory_var()
+    
 
     ms.plot('g','Time Optimized Trajectory')
+    
     plt.legend()
     plt.show()
